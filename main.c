@@ -22,7 +22,7 @@ static struct Job jobs[100];
  * 
  *
  **/
-void removeSpaces(char* str){
+char* removeSpaces(char* str){
 	int count = 0;
 	for (int i =0;str[i];i++)
 		if(str[i]!=' ')
