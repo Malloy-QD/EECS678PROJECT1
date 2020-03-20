@@ -137,4 +137,21 @@ struct Job
 	char* cmd;
 };
 
-
+int main(int argc, char** argv, char** envp){
+	printf("-----------------------------------------------------\n");
+	printf("-------------------Welcome to Quash------------------\n");
+	printf("-----------------------------------------------------\n");
+	char* cin;
+	char* readLine[128];
+	env = getenv("USER");
+	dir = getcwd(NULL,1024);
+	countJob = 0;
+		home = getenv("HOME");
+		path = getenv("PATH");
+		while(true){
+			cin = readline(readLine);
+			parseCommand(cin);
+		}
+		free(cin);
+	return 0;
+}
