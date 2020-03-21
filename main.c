@@ -1,3 +1,8 @@
+/**
+ * @file main.c
+ *
+ * Quash main file
+ */
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
@@ -9,6 +14,7 @@
 #include<unistd.h>
 #include<readline/readline.h>
 #include<readline/history.h>
+//construct job
 struct Job
 {
 	int pid;
@@ -22,12 +28,12 @@ static char* dir;
 static char* cmd;
 static char* path;
 static char* home;
+
+
 /**
- * 
- * 
- * 
- * 
- *
+ * need a str to pass in
+ * remove white space 
+ * return a str without any white space
  **/
 char* removeSpaces(char* str){
 	int count = 0;
@@ -39,6 +45,11 @@ char* removeSpaces(char* str){
 	return str;
 }
 
+/**
+ * need a str to pass in
+ * take action while encounter with any command matches- set,cd,jobs .....
+ * return a str without any white space
+ **/
 void parseCommand(char* command){
 	
 	//remove whitespace
@@ -70,8 +81,12 @@ void parseCommand(char* command){
 			//skip PATH
 			command = command+4;
 			if(strncmp(command,"=",1)==0){
+				//skip = and get the following command
 				command=command+1;
+				//create variable token to store command start with /
 				char* token = strstr(command,"/");
+
+				//multiple path-----still fixing
 				char* path1;
 				char* path2;
 				for(int i = 0;i<sizeof(token);i++){
@@ -80,6 +95,7 @@ void parseCommand(char* command){
 							path1[i]=token[i];
 						for(int k=i+1;k<sizeof(token);k++)
 							path2[k]=token[k];
+							
 					}
 				}
 				//path=[path1,path2];
@@ -97,7 +113,7 @@ void parseCommand(char* command){
 		}
 		}
 
-	
+	//set HOME command
 	else if (strncmp(command,"HOME",4)==0){
 		command = command+4;
 		if(strncmp(command,"=",1)==0){
@@ -117,9 +133,10 @@ void parseCommand(char* command){
 		}
 	}
 	}
-
-	
 	//end of set PATH AND HOME
+
+
+	//jobs command
 	else if (strncmp(command,"jobs",4)==0)
 	{
 		printf("JOBID\tPID\tCOMMAND\n");
@@ -130,10 +147,13 @@ void parseCommand(char* command){
 			}
 		}
 	}
+
+	//quit command
 	else if (strncmp(command,"quit",4)==0)
 	{
 		exit(0);
 	}
+	//exit command
 	else if (strncmp(command, "exit", 4) == 0)
 	{
 		exit(0);
@@ -141,7 +161,7 @@ void parseCommand(char* command){
 }
 
 
-
+//main function
 int main(int argc, char** argv, char** envp){
 	printf("-----------------------------------------------------\n");
 	printf("-------------------Welcome to Quash------------------\n");
