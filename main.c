@@ -9,14 +9,19 @@
 #include<unistd.h>
 #include<readline/readline.h>
 #include<readline/history.h>
-
+struct Job
+{
+	int pid;
+	int id;
+	char* cmd;
+};
+static int countJob = 0;
+static struct Job jobs[100];
 static char* env;
 static char* dir;
 static char* cmd;
 static char* path;
 static char* home;
-//static int countJob = 0;
-//static struct Job jobs[100];
 /**
  * 
  * 
@@ -31,9 +36,11 @@ char* removeSpaces(char* str){
 			str[count++]=str[i];
 
 	str[count]='\0';
+	return str;
 }
 
 void parseCommand(char* command){
+	
 	//remove whitespace
 	command = removeSpaces(command);
 	printf("%s\n",command);
@@ -113,15 +120,15 @@ void parseCommand(char* command){
 
 	
 	//end of set PATH AND HOME
-	//else if (strncmp(command,"jobs",4)==0)
-	//{
-		//printf("   JOBID   ","   PID   ","   COMMAND   \n");
-		//for(int i= 0;i<countJob;i++){
-			//if(kill(jobs[i].pid,0)==0){
-				//printf("   ",jobs[i].id,"   ","   ",jobs[i].pid,"   ","   ",jobs.[i].cmd,"   ","\n");
-			//}
-		//}
-	//}
+	else if (strncmp(command,"jobs",4)==0)
+	{
+		printf("   JOBID   ","   PID   ","   COMMAND   \n");
+		for(int i= 0;i<countJob;i++){
+			if(kill(jobs[i].pid,0)==0){
+				//printf("   %s       %s     %s    \n",jobs[i].id,jobs[i].pid,jobs.[i].cmd);
+			}
+		}
+	}
 	else if (strncmp(command,"quit",4)==0)
 	{
 		exit(0);
@@ -132,12 +139,7 @@ void parseCommand(char* command){
 	}
 }
 
-struct Job
-{
-	int pid;
-	int id;
-	char* cmd;
-};
+
 
 int main(int argc, char** argv, char** envp){
 	printf("-----------------------------------------------------\n");
@@ -147,17 +149,19 @@ int main(int argc, char** argv, char** envp){
 
 	env = getenv("USER");
 	dir = getcwd(NULL,1024);
-	//countJob = 0;
+	countJob = 0;
 		home = getenv("HOME");
 		path = getenv("PATH");
 		rl_bind_key('\t',rl_complete);
 		while(true){
 			snprintf(readLine,sizeof(readLine),"[%s:%s]$",env,dir);
 			input = readline(readLine);
-//printf("%s\n",readline(readLine));
+			
+
 			parseCommand(input);
-free(input);
+
 		}
+free(input);
 		
 	return 0;
 }
