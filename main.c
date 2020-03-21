@@ -16,7 +16,7 @@ struct Job
 	char* cmd;
 };
 static int countJob = 0;
-static struct Job jobs[100];
+static struct Job jobs[50];
 static char* env;
 static char* dir;
 static char* cmd;
@@ -122,10 +122,11 @@ void parseCommand(char* command){
 	//end of set PATH AND HOME
 	else if (strncmp(command,"jobs",4)==0)
 	{
-		printf("   JOBID   ","   PID   ","   COMMAND   \n");
+		printf("JOBID\tPID\tCOMMAND\n");
 		for(int i= 0;i<countJob;i++){
 			if(kill(jobs[i].pid,0)==0){
 				//printf("   %s       %s     %s    \n",jobs[i].id,jobs[i].pid,jobs.[i].cmd);
+				printf("[%d]\t%8d\t%s\n", jobs[i].id, jobs[i].pid, jobs.[i].cmd);
 			}
 		}
 	}
