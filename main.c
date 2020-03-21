@@ -36,7 +36,7 @@ char* removeSpaces(char* str){
 void parseCommand(char* command){
 	//remove whitespace
 	command = removeSpaces(command);
-
+	printf("%s\n",command);
 	//begin of cd command
 	if(strncmp(command,"cd",2)==0){
 		//skip cd
@@ -143,8 +143,8 @@ int main(int argc, char** argv, char** envp){
 	printf("-----------------------------------------------------\n");
 	printf("-------------------Welcome to Quash------------------\n");
 	printf("-----------------------------------------------------\n");
-	char* cin;
-	char* readLine[128];
+	char* input, readLine[128];
+
 	env = getenv("USER");
 	dir = getcwd(NULL,1024);
 	//countJob = 0;
@@ -153,9 +153,11 @@ int main(int argc, char** argv, char** envp){
 		rl_bind_key('\t',rl_complete);
 		while(true){
 			snprintf(readLine,sizeof(readLine),"[%s:%s]$",env,dir);
-			cin = readline(readLine);
-			parseCommand(cin);
+			input = readline(readLine);
+//printf("%s\n",readline(readLine));
+			parseCommand(input);
+free(input);
 		}
-		free(cin);
+		
 	return 0;
 }
