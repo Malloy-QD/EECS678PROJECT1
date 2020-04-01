@@ -1,0 +1,15 @@
+1) How to compile?
+    gcc quash.c -std=c99 -o quash -g
+2) How to run?
+    ./quash
+3) Main Frame
+    The main function contains a loop:
+        1) read line from the stdin
+        2) parse the line, fill them in the command array, and acquire whether it is a background job or not.
+            each command contains the necessary parameters and redirect input or output file
+        3) if parsing is successful, execute the entire commands
+            check whether the commands are built-in command or not: set, cd, exit, quit, jobs.
+            check whether the commands should be in background or not. If in background, a child process should be generated.
+            generate a single child process for every single command, and build up the pipe between every process.
+            read redirect  for the first command if necessary
+            write redirect for the last commands if necessary
